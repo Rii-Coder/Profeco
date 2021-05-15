@@ -5,261 +5,61 @@
  */
 package Filtro;
 
+
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import javax.servlet.annotation.WebFilter;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.ext.Provider;
 
 /**
  *
  * @author R2
  */
-public class Filtro implements Filter {
+@Provider
+@WebFilter(filterName = "Filtro", urlPatterns = {"/*"})
+public class Filtro implements ContainerRequestFilter {
 
-    private static final boolean debug = true;
+    private static final String AUTHENTICATION_HEADER = "Authorization";
 
-    // The filter configuration object we are associated with.  If
-    // this value is null, this filter instance is not currently
-    // configured. 
-    private FilterConfig filterConfig = null;
-
-    public Filtro() {
-    }
-
-    private void doBeforeProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (debug) {
-            log("Filtro:DoBeforeProcessing");
-        }
-
-        // Write code here to process the request and/or response before
-        // the rest of the filter chain is invoked.
-        // For example, a logging filter might log items on the request object,
-        // such as the parameters.
-        /*
-	for (Enumeration en = request.getParameterNames(); en.hasMoreElements(); ) {
-	    String name = (String)en.nextElement();
-	    String values[] = request.getParameterValues(name);
-	    int n = values.length;
-	    StringBuffer buf = new StringBuffer();
-	    buf.append(name);
-	    buf.append("=");
-	    for(int i=0; i < n; i++) {
-	        buf.append(values[i]);
-	        if (i < n-1)
-	            buf.append(",");
-	    }
-	    log(buf.toString());
-	}
-         */
-    }
-
-    private void doAfterProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException {
-        if (debug) {
-            log("Filtro:DoAfterProcessing");
-        }
-
-        // Write code here to process the request and/or response after
-        // the rest of the filter chain is invoked.
-        // For example, a logging filter might log the attributes on the
-        // request object after the request has been processed. 
-        /*
-	for (Enumeration en = request.getAttributeNames(); en.hasMoreElements(); ) {
-	    String name = (String)en.nextElement();
-	    Object value = request.getAttribute(name);
-	    log("attribute: " + name + "=" + value.toString());
-
-	}
-         */
-        // For example, a filter might append something to the response.
-        /*
-	PrintWriter respOut = new PrintWriter(response.getWriter());
-	respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
-         */
-    }
-
-    /**
-     *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param chain The filter chain we are processing
-     *
-     * @exception IOException if an input/output error occurs
-     * @exception ServletException if a servlet error occurs
-     */
-    public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain)
-            throws IOException, ServletException {
-
-        HttpServletRequest hola = (HttpServletRequest) request;
-
-        String url = hola.getRequestURI();
-        String method = hola.getMethod();
-
-        if (method.equalsIgnoreCase("POST") && url.contains("login")) {
-            
-            
-            
-            
-        } else {
-            System.out.println("obtener");
-        }
-
-        if (debug) {
-            log("Filtro:doFilter()");
-        }
-
+    @Override
+    public void filter(ContainerRequestContext requestContext) throws IOException, WebApplicationException {
         
-        doBeforeProcessing(request, response);
-
-        Throwable problem = null;
-
-            try {
-                chain.doFilter(request, response);
-            } catch (Throwable t) {
-                // If an exception is thrown somewhere down the filter chain,
-                // we still want to execute our after processing, and then
-                // rethrow the problem after that.
-                problem = t;
-                t.printStackTrace();
+        String method = requestContext.getMethod();
+        String path = requestContext.getUriInfo().getPath();
+        System.out.println("Method: " + method);
+        System.out.println("ENTRO AL FILTRO");
+        if(method.equals("POST") && path.contains("login")){
+            System.out.println("Entrando al filtro");
+        }else{
+            String token = requestContext.getHeaderString(AUTHENTICATION_HEADER);
+            System.out.println("Token: " +  token);
+            if(token != null){
+                System.out.println("Verificar token");
+            }else{
+                throw new WebApplicationException(Status.UNAUTHORIZED);
             }
-
-            doAfterProcessing(request, response);
-
-            // If there was a problem, we want to rethrow it if it is
-            // a known type, otherwise log it.
-            if (problem != null) {
-                if (problem instanceof ServletException) {
-                    throw (ServletException) problem;
-                }
-                if (problem instanceof IOException) {
-                    throw (IOException) problem;
-                }
-                sendProcessingError(problem, response);
-            }
+        }
         
     }
 
-    private void verificarToken(String token) {
-        try {
+   
+    private void verificarToken(String token) throws JWTVerificationException{
+        try{
             Algorithm algorithm = Algorithm.HMAC256("millave");
-            JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer("auth0").build();
+            JWTVerifier verifier = JWT.require(algorithm).withIssuer("auth0").build();
             DecodedJWT jwt = verifier.verify(token);
         }catch(JWTVerificationException e){
-            e.printStackTrace();
-            System.out.println("firma invalida");
+            throw new JWTVerificationException("Token no valido");
         }
     }
-
-    /**
-     * Return the filter configuration object for this filter.
-     */
-    public FilterConfig getFilterConfig() {
-        return (this.filterConfig);
-    }
-
-    /**
-     * Set the filter configuration object for this filter.
-     *
-     * @param filterConfig The filter configuration object
-     */
-    public void setFilterConfig(FilterConfig filterConfig) {
-        this.filterConfig = filterConfig;
-    }
-
-    /**
-     * Destroy method for this filter
-     */
-    public void destroy() {
-    }
-
-    /**
-     * Init method for this filter
-     */
-    public void init(FilterConfig filterConfig) {
-        this.filterConfig = filterConfig;
-        if (filterConfig != null) {
-            if (debug) {
-                log("Filtro:Initializing filter");
-            }
-        }
-    }
-
-    /**
-     * Return a String representation of this object.
-     */
-    @Override
-    public String toString() {
-        if (filterConfig == null) {
-            return ("Filtro()");
-        }
-        StringBuffer sb = new StringBuffer("Filtro(");
-        sb.append(filterConfig);
-        sb.append(")");
-        return (sb.toString());
-    }
-
-    private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);
-
-        if (stackTrace != null && !stackTrace.equals("")) {
-            try {
-                response.setContentType("text/html");
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);
-                pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
-
-                // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
-                pw.print(stackTrace);
-                pw.print("</pre></body>\n</html>"); //NOI18N
-                pw.close();
-                ps.close();
-                response.getOutputStream().close();
-            } catch (Exception ex) {
-            }
-        } else {
-            try {
-                PrintStream ps = new PrintStream(response.getOutputStream());
-                t.printStackTrace(ps);
-                ps.close();
-                response.getOutputStream().close();
-            } catch (Exception ex) {
-            }
-        }
-    }
-
-    public static String getStackTrace(Throwable t) {
-        String stackTrace = null;
-        try {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            t.printStackTrace(pw);
-            pw.close();
-            sw.close();
-            stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
-        }
-        return stackTrace;
-    }
-
-    public void log(String msg) {
-        filterConfig.getServletContext().log(msg);
-    }
-
 }

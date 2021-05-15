@@ -12,7 +12,11 @@ package DAO;
 public class UsuarioDAO {
     
     public static boolean validar(String username, String password){
-        return(username.equals("admin") && password.equals("admin"));
+        
+        
+        return(username.equals("profeco") && password.equals("profeco") ||
+                username.equals("consumidor") && password.equals("consumidor") ||
+                username.equals("mercado") && password.equals("mercado"));
     }
     
 }
