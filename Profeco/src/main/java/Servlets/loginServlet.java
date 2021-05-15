@@ -47,7 +47,7 @@ public class loginServlet extends HttpServlet {
 
             Usuario usuarioObj = new Usuario(0, usuario, contra);
 
-            URL url = new URL("http://localhost:8080/profeco/api/auth/login");
+            URL url = new URL("http://localhost:8080/Profeco/api/auth/login");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
@@ -78,7 +78,9 @@ public class loginServlet extends HttpServlet {
             }
 
             if (con.getResponseMessage().equals("Created")) {
-                //ENVIAR A PAGINA
+                if (usuario.equals("mercado")) {
+                    response.sendRedirect("MenuConsumidor.html");
+                }
                 
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");

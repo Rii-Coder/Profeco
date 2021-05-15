@@ -1,0 +1,106 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 1/12/2020, 08:08:51 PM
+    Author     : R2
+*/
+
+*{
+    box-sizing: border-box;
+    font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
+    
+}
+
+a{
+    color:aquamarine;
+}
+
+a:hover{
+    color:orangered;
+}
+
+ 
+header{
+    background-color: #C7460A;
+    text-align: center;
+    font-size: 30px;
+    color:white;
+    padding:15px;
+    font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace; 
+    
+}
+
+
+nav{
+    
+    float: left;
+    width:21%;
+    background-color: #574E4A;
+    line-height : 40px;
+    font-size: 17px;
+    padding: 15px;
+    height: 500px;
+    color: white;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+
+nav ul{
+    list-style: none;
+    margin-left:-40px;
+    font-weight: 500;
+    color: white;
+    text-align: left;
+}
+
+nav ul a{
+    
+    text-decoration: none;
+    color: white;
+}
+
+nav ul a:hover{
+    color: orangered;
+}
+article{
+    float:right;
+   width:79%;
+   height: 500px;
+   padding: 10px;
+   background-color: #D1C9C5;
+   
+}
+
+footer{
+    background-color: #471904;
+    color:white;
+    float: end;
+    text-align: center;
+    
+}
+
+input[type=number]{
+    width: 170px;
+}
+
+input [type=text]{
+    width: 160px;
+}
+input[type=submit],input[type=button]{
+
+    
+    background-image: url("https://image.flaticon.com/icons/png/512/16/16116.png") ;
+    
+}
+
+button[type=button]{
+    background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE4LjEuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMjYuNjc2IDI2LjY3NiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMjYuNjc2IDI2LjY3NjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPHBhdGggZD0iTTI2LjEwNSwyMS44OTFjLTAuMjI5LDAtMC40MzktMC4xMzEtMC41MjktMC4zNDZsMCwwYy0wLjA2Ni0wLjE1Ni0xLjcxNi0zLjg1Ny03Ljg4NS00LjU5DQoJCWMtMS4yODUtMC4xNTYtMi44MjQtMC4yMzYtNC42OTMtMC4yNXY0LjYxM2MwLDAuMjEzLTAuMTE1LDAuNDA2LTAuMzA0LDAuNTA4Yy0wLjE4OCwwLjA5OC0wLjQxMywwLjA4NC0wLjU4OC0wLjAzM0wwLjI1NCwxMy44MTUNCgkJQzAuMDk0LDEzLjcwOCwwLDEzLjUyOCwwLDEzLjMzOWMwLTAuMTkxLDAuMDk0LTAuMzY1LDAuMjU0LTAuNDc3bDExLjg1Ny03Ljk3OWMwLjE3NS0wLjEyMSwwLjM5OC0wLjEyOSwwLjU4OC0wLjAyOQ0KCQljMC4xOSwwLjEwMiwwLjMwMywwLjI5NSwwLjMwMywwLjUwMnY0LjI5M2MyLjU3OCwwLjMzNiwxMy42NzQsMi4zMywxMy42NzQsMTEuNjc0YzAsMC4yNzEtMC4xOTEsMC41MDgtMC40NTksMC41NjINCgkJQzI2LjE4LDIxLjg5MSwyNi4xNDEsMjEuODkxLDI2LjEwNSwyMS44OTF6Ii8+DQoJPGc+DQoJPC9nPg0KCTxnPg0KCTwvZz4NCgk8Zz4NCgk8L2c+DQoJPGc+DQoJPC9nPg0KCTxnPg0KCTwvZz4NCgk8Zz4NCgk8L2c+DQoJPGc+DQoJPC9nPg0KCTxnPg0KCTwvZz4NCgk8Zz4NCgk8L2c+DQoJPGc+DQoJPC9nPg0KCTxnPg0KCTwvZz4NCgk8Zz4NCgk8L2c+DQoJPGc+DQoJPC9nPg0KCTxnPg0KCTwvZz4NCgk8Zz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==");
+    background-repeat: no-repeat;
+    height:32px;
+    width:32px;
+    background-position:center;
+}
+
