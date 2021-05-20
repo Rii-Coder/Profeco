@@ -5,8 +5,9 @@ package Servlets;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import Entidades.Usuario;
+
 import com.google.gson.Gson;
+import entities.Usuario;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,7 +20,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.codehaus.jettison.json.JSONObject;
 
 /**
  *
@@ -44,8 +44,9 @@ public class loginServlet extends HttpServlet {
 
             String usuario = request.getParameter("user");
             String contra = request.getParameter("password");
+    
 
-            Usuario usuarioObj = new Usuario(0, usuario, contra);
+            Usuario usuarioObj = new Usuario(0, usuario, contra, "asdf");
 
             URL url = new URL("http://localhost:8080/profeco/api/auth/login");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -58,6 +59,7 @@ public class loginServlet extends HttpServlet {
             Gson gson = new Gson();
             String jsonInputString = gson.toJson(usuarioObj);
 
+            System.out.println("Json " + jsonInputString);
             try (OutputStream os = con.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes();
                 os.write(input, 0, input.length);

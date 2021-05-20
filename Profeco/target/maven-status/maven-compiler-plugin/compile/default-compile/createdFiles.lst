@@ -1,10 +1,5 @@
-DAO\UsuarioDAO.class
-Entidades\Usuario.class
-frame\Login$3.class
-frame\Login.class
-frame\Login$1.class
 Servlets\loginServlet.class
 Filtro\Filtro.class
-frame\Login$2.class
 Servicios\Configuracion.class
+Filtro\Filtro2.class
 Servicios\LoginServicio.class

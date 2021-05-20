@@ -1,0 +1,5 @@
+com\papitas\accesodatosprofeco\exceptions\NonexistentEntityException.class
+controladores\UsuarioControlador.class
+com\papitas\accesodatosprofeco\exceptions\IllegalOrphanException.class
+com\papitas\accesodatosprofeco\exceptions\PreexistingEntityException.class
+entities\Usuario.class

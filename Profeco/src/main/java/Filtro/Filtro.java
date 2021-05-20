@@ -33,7 +33,7 @@ public class Filtro implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException, WebApplicationException {
-        
+        System.out.println("Filtro bueno");
         String method = requestContext.getMethod();
         String path = requestContext.getUriInfo().getPath();
         System.out.println("Method: " + method);
