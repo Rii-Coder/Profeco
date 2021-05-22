@@ -5,16 +5,16 @@
  */
 package Servicios;
 
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.google.gson.Gson;
 import controladores.OfertaControlador;
+import controladores.ProductoControlador;
 import controladores.UsuarioControlador;
 import entities.Oferta;
+import entities.Producto;
 import entities.Usuario;
-
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -34,13 +34,15 @@ import javax.ws.rs.core.Response;
  */
 @Path("auth")
 public class LoginServicio {
-    
+
     UsuarioControlador usuarioControlador;
     OfertaControlador ofertaControlador;
+    ProductoControlador productoControlador;
 
-    public LoginServicio(){
+    public LoginServicio() {
         this.usuarioControlador = new UsuarioControlador();
         this.ofertaControlador = new OfertaControlador();
+        this.productoControlador = new ProductoControlador();
     }
 
     @POST
@@ -48,7 +50,7 @@ public class LoginServicio {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("login")
     public Response validar(Usuario usuario) throws IllegalArgumentException, UnsupportedEncodingException {
-      
+
         boolean status = this.usuarioControlador.validate(usuario);
         String token = null;
         if (status) {
@@ -63,8 +65,8 @@ public class LoginServicio {
                 e.printStackTrace();
             }
             JsonObject json = Json.createObjectBuilder()
-                                .add("JWT", token).build();
-            
+                    .add("JWT", token).build();
+
             return Response.status(Response.Status.CREATED).entity(json).build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -77,43 +79,54 @@ public class LoginServicio {
         System.out.println("Metodo obtener");
         Usuario usuario = this.usuarioControlador.find(1);
 
-
         return Response.status(Response.Status.CREATED).entity(usuario).build();
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getOfertas")
-    public Response obtenerOfertas(){
+    public Response obtenerOfertas() {
         ArrayList<Oferta> ofertas = ofertaControlador.getAll();
-        
+
         if (ofertas != null) {
             return Response.status(Response.Status.CREATED).entity(ofertas).build();
-        }else if (ofertas.isEmpty()) {
+        } else if (ofertas.isEmpty()) {
             return Response.status(Response.Status.NO_CONTENT).build();
-       }else{
+        } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
-    
-    
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("createOferta")
     public Response agregarOfertas(Oferta oferta) throws IllegalArgumentException, UnsupportedEncodingException {
-      
+
         if (oferta != null) {
 
             Gson gson = new Gson();
             String json = gson.toJson(oferta);
-            
+
             ofertaControlador.create(oferta);
             return Response.status(Response.Status.CREATED).entity(json).build();
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
-    
-    
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("editarProducto")
+    public Response editarProducto(Producto producto) throws IllegalArgumentException, UnsupportedEncodingException {
+        if (producto != null) {
+
+            Gson gson = new Gson();
+            String json = gson.toJson(producto);
+
+            productoControlador.update(producto);
+            return Response.status(Response.Status.OK).entity(json).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
 }
