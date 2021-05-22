@@ -129,4 +129,15 @@ public class LoginServicio {
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
+    
+    public Response eliminarProducto(Producto producto) throws IllegalArgumentException, UnsupportedEncodingException{
+        if(producto != null){
+            Gson gson = new Gson();
+            String json = gson.toJson(producto);
+            
+            productoControlador.delete(producto);
+            return Response.status(Response.Status.OK).entity(json).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
 }
